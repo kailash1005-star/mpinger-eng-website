@@ -1,6 +1,6 @@
 import { c as createComponent, m as maybeRenderHead, a as addAttribute, r as renderTemplate, b as createAstro, d as renderComponent } from '../chunks/astro/server_DZ0hs0Eg.mjs';
 import 'kleur/colors';
-import { l as localizePath, L as LOCALES, $ as $$BaseLayout, t } from '../chunks/BaseLayout_DbiK-d5t.mjs';
+import { l as localizePath, L as LOCALES, $ as $$BaseLayout, t } from '../chunks/BaseLayout_BENEPnCy.mjs';
 import 'clsx';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';

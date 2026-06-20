@@ -157,10 +157,12 @@ export const footerNav = [
 
 export const footerColumns = [
   {
-    title: 'Products',
+    title: 'Produkte',
     links: [
-      { label: 'Machines', href: '/products/machines' },
+      { label: 'Fräsen', href: '/products/machines/fraesen' },
+      { label: 'Drehen', href: '/products/machines/drehen' },
       { label: 'Automation', href: '/products/automation' },
+      { label: 'Messtechnik', href: '/products/messtechnik' },
     ],
   },
   {
