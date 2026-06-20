@@ -5,6 +5,15 @@ import { LOCALES, LOCALE_LABELS, LOCALE_SHORT, t, localizePath, switchLocalePath
 
 const { locale = 'de', pathname = '/' } = Astro.props;
 const L = (p) => localizePath(locale, p);
+
+// Resolve each nav node's label for the active locale (key → dictionary,
+// else `en` for English, else the German default). Applied recursively so the
+// server-rendered entries and the JS-built flyout columns are both localized.
+function localizeNode(node) {
+  const label = node.key ? t(locale, node.key) : (locale === 'en' && node.en ? node.en : node.label);
+  return { ...node, label, children: node.children ? node.children.map(localizeNode) : undefined };
+}
+const navL = megaNav.map(localizeNode);
 ---
 <header class="ci-header" id="site-header">
   <!-- Meta navigation (top utility bar) -->
@@ -51,9 +60,9 @@ const L = (p) => localizePath(locale, p);
       </a>
 
       <nav class="ci-main-nav-entries" aria-label="Main">
-        {megaNav.map((item, i) => (
+        {navL.map((item, i) => (
           <div class="ci-main-nav-entry" data-section={i}>
-            <a class="ci-main-nav-link" href={L(item.href)}>{item.key ? t(locale, item.key) : item.label}</a>
+            <a class="ci-main-nav-link" href={L(item.href)}>{item.label}</a>
           </div>
         ))}
       </nav>
@@ -83,7 +92,7 @@ const L = (p) => localizePath(locale, p);
   </div>
 </header>
 
-<script is:inline define:vars={{ NAV: megaNav, LANG: locale }}>
+<script is:inline define:vars={{ NAV: navL, LANG: locale }}>
   (function () {
     const header = document.getElementById('site-header');
     const flyout = document.getElementById('nav-flyout');

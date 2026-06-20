@@ -29,7 +29,9 @@ const icons = {
     <div class="container ci-footer-grid">
       <div class="ci-footer-brand">
         <img src="/brand/mpinger-logo-1.png" alt="mpinger Engineering" />
-        <p>Ihr Partner für deutsch-indische Fertigungslösungen — Präzisionsteile in gleichbleibend hoher Qualität.</p>
+        <p>{locale === 'en'
+          ? 'Your partner for German-Indian manufacturing solutions — precision parts at consistently high quality.'
+          : 'Ihr Partner für deutsch-indische Fertigungslösungen — Präzisionsteile in gleichbleibend hoher Qualität.'}</p>
         <div class="ci-footer-social">
           {social.map((s) => (
             <a href={s.href} aria-label={s.label} target="_blank" rel="noopener">
@@ -40,9 +42,9 @@ const icons = {
       </div>
       {footerColumns.map((col) => (
         <div class="ci-footer-col">
-          <p class="ci-footer-col-title">{col.titleKey ? t(locale, col.titleKey) : col.title}</p>
+          <p class="ci-footer-col-title">{col.titleKey ? t(locale, col.titleKey) : (locale === 'en' && col.en ? col.en : col.title)}</p>
           <ul>
-            {col.links.map((l) => <li><a href={L(l.href)}>{l.key ? t(locale, l.key) : l.label}</a></li>)}
+            {col.links.map((l) => <li><a href={L(l.href)}>{l.key ? t(locale, l.key) : (locale === 'en' && l.en ? l.en : l.label)}</a></li>)}
           </ul>
         </div>
       ))}
@@ -54,7 +56,7 @@ const icons = {
       <nav class="ci-footer-bottom-navi" aria-label="Legal">
         {footerNav.map((l) => <a href={L(l.href)}>{t(locale, l.key)}</a>)}
       </nav>
-      <span class="ci-footer-copyright">Copyright &copy; {year} mpinger GmbH. Alle Rechte vorbehalten.</span>
+      <span class="ci-footer-copyright">Copyright &copy; {year} mpinger GmbH. {locale === 'en' ? 'All rights reserved.' : 'Alle Rechte vorbehalten.'}</span>
     </div>
   </div>
 </footer>

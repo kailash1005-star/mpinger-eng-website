@@ -1,69 +1,70 @@
-// Navigation: real machine classification (from the machine park) under
-// Products, plus Solutions and Company. Every path exists in the CMS.
+// Navigation: real machine classification under Products, plus Solutions and
+// Company. Every node carries a German `label` (primary) and an English `en`
+// label; the Header picks the right one per locale. Every path exists in the CMS.
 export const megaNav = [
   {
-    key: 'products', label: 'Produkte', href: '/products',
+    key: 'products', label: 'Produkte', en: 'Products', href: '/products',
     children: [
       {
-        label: 'Maschinen', href: '/products/machines',
+        label: 'Maschinen', en: 'Machines', href: '/products/machines',
         children: [
           {
-            label: 'Fräsen', href: '/products/machines/fraesen',
+            label: 'Fräsen', en: 'Milling', href: '/products/machines/fraesen',
             children: [
-              { label: '5-Achs-Universalbearbeitung', href: '/products/machines/fraesen/5-achs-universal' },
-              { label: 'Horizontalbearbeitung', href: '/products/machines/fraesen/horizontalbearbeitung' },
-              { label: 'Vertikalfräsen', href: '/products/machines/fraesen/vertikalfraesen' },
+              { label: '5-Achs-Universalbearbeitung', en: '5-Axis Universal Machining', href: '/products/machines/fraesen/5-achs-universal' },
+              { label: 'Horizontalbearbeitung', en: 'Horizontal Machining', href: '/products/machines/fraesen/horizontalbearbeitung' },
+              { label: 'Vertikalfräsen', en: 'Vertical Milling', href: '/products/machines/fraesen/vertikalfraesen' },
             ],
           },
           {
-            label: 'Drehen', href: '/products/machines/drehen',
+            label: 'Drehen', en: 'Turning', href: '/products/machines/drehen',
             children: [
-              { label: 'Universaldrehmaschinen', href: '/products/machines/drehen/universaldrehmaschinen' },
-              { label: 'Großdrehmaschinen', href: '/products/machines/drehen/grossdrehmaschinen' },
+              { label: 'Universaldrehmaschinen', en: 'Universal Lathes', href: '/products/machines/drehen/universaldrehmaschinen' },
+              { label: 'Großdrehmaschinen', en: 'Large Turning Machines', href: '/products/machines/drehen/grossdrehmaschinen' },
             ],
           },
         ],
       },
       {
-        label: 'Automation', href: '/products/automation',
+        label: 'Automation', en: 'Automation', href: '/products/automation',
         children: [
-          { label: 'PH Cell 2000', href: '/products/automation/ph-cell-2000' },
-          { label: 'PH Cell 300', href: '/products/automation/ph-cell-300' },
-          { label: 'Robo2Go', href: '/products/automation/robo2go' },
+          { label: 'PH Cell 2000', en: 'PH Cell 2000', href: '/products/automation/ph-cell-2000' },
+          { label: 'PH Cell 300', en: 'PH Cell 300', href: '/products/automation/ph-cell-300' },
+          { label: 'Robo2Go', en: 'Robo2Go', href: '/products/automation/robo2go' },
         ],
       },
       {
-        label: 'Messtechnik', href: '/products/messtechnik',
+        label: 'Messtechnik', en: 'Metrology', href: '/products/messtechnik',
         children: [
-          { label: 'Keyence XM-5000', href: '/products/messtechnik/keyence-xm-5000' },
+          { label: 'Keyence XM-5000', en: 'Keyence XM-5000', href: '/products/messtechnik/keyence-xm-5000' },
         ],
       },
     ],
   },
   {
-    key: 'solutions', label: 'Solutions', href: '/solutions',
+    key: 'solutions', label: 'Lösungen', en: 'Solutions', href: '/solutions',
     children: [
       {
-        label: 'Focus Industries', href: '/solutions/focus-industries',
+        label: 'Fokusbranchen', en: 'Focus Industries', href: '/solutions/focus-industries',
         children: [
-          { label: 'Aerospace', href: '/solutions/focus-industries/aerospace' },
-          { label: 'Medical', href: '/solutions/focus-industries/medical' },
+          { label: 'Luft- & Raumfahrt', en: 'Aerospace', href: '/solutions/focus-industries/aerospace' },
+          { label: 'Medizintechnik', en: 'Medical', href: '/solutions/focus-industries/medical' },
         ],
       },
       {
-        label: 'Technology Excellence', href: '/solutions/technology-excellence',
+        label: 'Technologie-Exzellenz', en: 'Technology Excellence', href: '/solutions/technology-excellence',
         children: [
-          { label: 'Aerospace Excellence', href: '/solutions/technology-excellence/aerospace-excellence' },
+          { label: 'Aerospace Excellence', en: 'Aerospace Excellence', href: '/solutions/technology-excellence/aerospace-excellence' },
         ],
       },
     ],
   },
   {
-    key: 'company', label: 'Company', href: '/company',
+    key: 'company', label: 'Unternehmen', en: 'Company', href: '/company',
     children: [
-      { key: 'about', label: 'About Us', href: '/ueber-uns' },
-      { label: 'Locations', href: '/company/locations' },
-      { key: 'contact', label: 'Contact', href: '/kontakt' },
+      { key: 'about', label: 'Über uns', en: 'About Us', href: '/ueber-uns' },
+      { label: 'Standorte', en: 'Locations', href: '/company/locations' },
+      { key: 'contact', label: 'Kontakt', en: 'Contact', href: '/kontakt' },
     ],
   },
 ];

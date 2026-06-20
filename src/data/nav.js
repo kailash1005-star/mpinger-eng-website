@@ -157,26 +157,26 @@ export const footerNav = [
 
 export const footerColumns = [
   {
-    title: 'Produkte',
+    title: 'Produkte', en: 'Products',
     links: [
-      { label: 'Fräsen', href: '/products/machines/fraesen' },
-      { label: 'Drehen', href: '/products/machines/drehen' },
-      { label: 'Automation', href: '/products/automation' },
-      { label: 'Messtechnik', href: '/products/messtechnik' },
+      { label: 'Fräsen', en: 'Milling', href: '/products/machines/fraesen' },
+      { label: 'Drehen', en: 'Turning', href: '/products/machines/drehen' },
+      { label: 'Automation', en: 'Automation', href: '/products/automation' },
+      { label: 'Messtechnik', en: 'Metrology', href: '/products/messtechnik' },
     ],
   },
   {
-    title: 'Solutions',
+    title: 'Lösungen', en: 'Solutions',
     links: [
-      { label: 'Focus Industries', href: '/solutions/focus-industries' },
-      { label: 'Technology Excellence', href: '/solutions/technology-excellence' },
+      { label: 'Fokusbranchen', en: 'Focus Industries', href: '/solutions/focus-industries' },
+      { label: 'Technologie-Exzellenz', en: 'Technology Excellence', href: '/solutions/technology-excellence' },
     ],
   },
   {
     titleKey: 'company',
     links: [
       { key: 'about', href: '/ueber-uns' },
-      { label: 'Locations', href: '/company/locations' },
+      { label: 'Standorte', en: 'Locations', href: '/company/locations' },
       { key: 'contact', href: '/kontakt' },
     ],
   },

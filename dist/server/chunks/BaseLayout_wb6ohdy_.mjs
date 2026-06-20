@@ -21,26 +21,26 @@ const footerNav = [
 
 const footerColumns = [
   {
-    title: 'Produkte',
+    title: 'Produkte', en: 'Products',
     links: [
-      { label: 'Fräsen', href: '/products/machines/fraesen' },
-      { label: 'Drehen', href: '/products/machines/drehen' },
-      { label: 'Automation', href: '/products/automation' },
-      { label: 'Messtechnik', href: '/products/messtechnik' },
+      { label: 'Fräsen', en: 'Milling', href: '/products/machines/fraesen' },
+      { label: 'Drehen', en: 'Turning', href: '/products/machines/drehen' },
+      { label: 'Automation', en: 'Automation', href: '/products/automation' },
+      { label: 'Messtechnik', en: 'Metrology', href: '/products/messtechnik' },
     ],
   },
   {
-    title: 'Solutions',
+    title: 'Lösungen', en: 'Solutions',
     links: [
-      { label: 'Focus Industries', href: '/solutions/focus-industries' },
-      { label: 'Technology Excellence', href: '/solutions/technology-excellence' },
+      { label: 'Fokusbranchen', en: 'Focus Industries', href: '/solutions/focus-industries' },
+      { label: 'Technologie-Exzellenz', en: 'Technology Excellence', href: '/solutions/technology-excellence' },
     ],
   },
   {
     titleKey: 'company',
     links: [
       { key: 'about', href: '/ueber-uns' },
-      { label: 'Locations', href: '/company/locations' },
+      { label: 'Standorte', en: 'Locations', href: '/company/locations' },
       { key: 'contact', href: '/kontakt' },
     ],
   },
@@ -58,72 +58,73 @@ const social = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mpinger/', icon: 'linkedin' },
 ];
 
-// Navigation: real machine classification (from the machine park) under
-// Products, plus Solutions and Company. Every path exists in the CMS.
+// Navigation: real machine classification under Products, plus Solutions and
+// Company. Every node carries a German `label` (primary) and an English `en`
+// label; the Header picks the right one per locale. Every path exists in the CMS.
 const megaNav = [
   {
-    key: 'products', label: 'Produkte', href: '/products',
+    key: 'products', label: 'Produkte', en: 'Products', href: '/products',
     children: [
       {
-        label: 'Maschinen', href: '/products/machines',
+        label: 'Maschinen', en: 'Machines', href: '/products/machines',
         children: [
           {
-            label: 'Fräsen', href: '/products/machines/fraesen',
+            label: 'Fräsen', en: 'Milling', href: '/products/machines/fraesen',
             children: [
-              { label: '5-Achs-Universalbearbeitung', href: '/products/machines/fraesen/5-achs-universal' },
-              { label: 'Horizontalbearbeitung', href: '/products/machines/fraesen/horizontalbearbeitung' },
-              { label: 'Vertikalfräsen', href: '/products/machines/fraesen/vertikalfraesen' },
+              { label: '5-Achs-Universalbearbeitung', en: '5-Axis Universal Machining', href: '/products/machines/fraesen/5-achs-universal' },
+              { label: 'Horizontalbearbeitung', en: 'Horizontal Machining', href: '/products/machines/fraesen/horizontalbearbeitung' },
+              { label: 'Vertikalfräsen', en: 'Vertical Milling', href: '/products/machines/fraesen/vertikalfraesen' },
             ],
           },
           {
-            label: 'Drehen', href: '/products/machines/drehen',
+            label: 'Drehen', en: 'Turning', href: '/products/machines/drehen',
             children: [
-              { label: 'Universaldrehmaschinen', href: '/products/machines/drehen/universaldrehmaschinen' },
-              { label: 'Großdrehmaschinen', href: '/products/machines/drehen/grossdrehmaschinen' },
+              { label: 'Universaldrehmaschinen', en: 'Universal Lathes', href: '/products/machines/drehen/universaldrehmaschinen' },
+              { label: 'Großdrehmaschinen', en: 'Large Turning Machines', href: '/products/machines/drehen/grossdrehmaschinen' },
             ],
           },
         ],
       },
       {
-        label: 'Automation', href: '/products/automation',
+        label: 'Automation', en: 'Automation', href: '/products/automation',
         children: [
-          { label: 'PH Cell 2000', href: '/products/automation/ph-cell-2000' },
-          { label: 'PH Cell 300', href: '/products/automation/ph-cell-300' },
-          { label: 'Robo2Go', href: '/products/automation/robo2go' },
+          { label: 'PH Cell 2000', en: 'PH Cell 2000', href: '/products/automation/ph-cell-2000' },
+          { label: 'PH Cell 300', en: 'PH Cell 300', href: '/products/automation/ph-cell-300' },
+          { label: 'Robo2Go', en: 'Robo2Go', href: '/products/automation/robo2go' },
         ],
       },
       {
-        label: 'Messtechnik', href: '/products/messtechnik',
+        label: 'Messtechnik', en: 'Metrology', href: '/products/messtechnik',
         children: [
-          { label: 'Keyence XM-5000', href: '/products/messtechnik/keyence-xm-5000' },
+          { label: 'Keyence XM-5000', en: 'Keyence XM-5000', href: '/products/messtechnik/keyence-xm-5000' },
         ],
       },
     ],
   },
   {
-    key: 'solutions', label: 'Solutions', href: '/solutions',
+    key: 'solutions', label: 'Lösungen', en: 'Solutions', href: '/solutions',
     children: [
       {
-        label: 'Focus Industries', href: '/solutions/focus-industries',
+        label: 'Fokusbranchen', en: 'Focus Industries', href: '/solutions/focus-industries',
         children: [
-          { label: 'Aerospace', href: '/solutions/focus-industries/aerospace' },
-          { label: 'Medical', href: '/solutions/focus-industries/medical' },
+          { label: 'Luft- & Raumfahrt', en: 'Aerospace', href: '/solutions/focus-industries/aerospace' },
+          { label: 'Medizintechnik', en: 'Medical', href: '/solutions/focus-industries/medical' },
         ],
       },
       {
-        label: 'Technology Excellence', href: '/solutions/technology-excellence',
+        label: 'Technologie-Exzellenz', en: 'Technology Excellence', href: '/solutions/technology-excellence',
         children: [
-          { label: 'Aerospace Excellence', href: '/solutions/technology-excellence/aerospace-excellence' },
+          { label: 'Aerospace Excellence', en: 'Aerospace Excellence', href: '/solutions/technology-excellence/aerospace-excellence' },
         ],
       },
     ],
   },
   {
-    key: 'company', label: 'Company', href: '/company',
+    key: 'company', label: 'Unternehmen', en: 'Company', href: '/company',
     children: [
-      { key: 'about', label: 'About Us', href: '/ueber-uns' },
-      { label: 'Locations', href: '/company/locations' },
-      { key: 'contact', label: 'Contact', href: '/kontakt' },
+      { key: 'about', label: 'Über uns', en: 'About Us', href: '/ueber-uns' },
+      { label: 'Standorte', en: 'Locations', href: '/company/locations' },
+      { key: 'contact', label: 'Kontakt', en: 'Contact', href: '/kontakt' },
     ],
   },
 ];
@@ -194,6 +195,11 @@ const $$Header = createComponent(($$result, $$props, $$slots) => {
   Astro2.self = $$Header;
   const { locale = "de", pathname = "/" } = Astro2.props;
   const L = (p) => localizePath(locale, p);
+  function localizeNode(node) {
+    const label = node.key ? t(locale, node.key) : locale === "en" && node.en ? node.en : node.label;
+    return { ...node, label, children: node.children ? node.children.map(localizeNode) : void 0 };
+  }
+  const navL = megaNav.map(localizeNode);
   return renderTemplate(_a || (_a = __template(["", '<header class="ci-header" id="site-header"> <!-- Meta navigation (top utility bar) --> <div class="ci-meta-navigation"> <div class="ci-meta-left"> <button class="ci-site-selector" aria-haspopup="true"> <span>', '</span> <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg> </button> </div> <div class="ci-meta-right"> <a class="ci-meta-item"', ">", '</a> <!-- Language dropdown --> <div class="ci-lang-switch" id="lang-switch"> <button class="ci-meta-item ci-lang" aria-haspopup="true" aria-expanded="false" id="lang-toggle"> <span class="ci-lang-code">', '</span> <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg> </button> <div class="ci-lang-menu" id="lang-menu" hidden> ', ' </div> </div> <a class="ci-meta-item ci-login"', '> <span class="ci-login-avatar" aria-hidden="true"> <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"></path></svg> </span> ', ' </a> </div> </div> <!-- Main navigation --> <div class="ci-main-nav"> <div class="container ci-main-nav-inner"> <a class="ci-logo"', ' aria-label="mpinger home"> <img src="/brand/mpinger-logo-1.png" alt="mpinger Engineering" width="164" height="59"> </a> <nav class="ci-main-nav-entries" aria-label="Main"> ', ' </nav> <div class="ci-main-nav-actions"> <button class="ci-search-toggle" aria-label="Search" id="search-toggle"> <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> </button> <button class="ci-burger" aria-label="Menu" id="burger"><span></span><span></span><span></span></button> </div> </div> </div> <!-- Cascading mega flyout (columns injected by JS) --> <div class="ci-nav-flyout" id="nav-flyout" hidden> <div class="ci-flyout-cols" id="flyout-cols"></div> </div> <!-- Search flyout --> <div class="ci-search-flyout" id="search-flyout" hidden> <div class="container ci-search-flyout-wrapper"> <div class="ci-search-input-wrapper"> <input type="search" class="ci-search-input" placeholder="What are you looking for?" aria-label="Search"> <button class="ci-search-flyout-close" id="search-close" aria-label="Close">&times;</button> </div> </div> </div> </header> <script>(function(){', `
   (function () {
     const header = document.getElementById('site-header');
@@ -380,7 +386,7 @@ const $$Header = createComponent(($$result, $$props, $$slots) => {
     // Scroll shrink
     window.addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 40));
   })();
-})();<\/script>`])), maybeRenderHead(), t(locale, "productWebsite"), addAttribute(L(metaNav.customerService.href), "href"), t(locale, "customerService"), LOCALE_SHORT[locale], LOCALES.map((lc) => renderTemplate`<a${addAttribute(`ci-lang-option ${lc === locale ? "is-active" : ""}`, "class")}${addAttribute(switchLocalePath(pathname, lc), "href")}${addAttribute(lc, "hreflang")}${addAttribute(lc, "lang")}> <span class="ci-lang-option-code">${LOCALE_SHORT[lc]}</span> <span>${LOCALE_LABELS[lc]}</span> </a>`), addAttribute(L(metaNav.login.href), "href"), t(locale, "login"), addAttribute(L("/"), "href"), megaNav.map((item, i) => renderTemplate`<div class="ci-main-nav-entry"${addAttribute(i, "data-section")}> <a class="ci-main-nav-link"${addAttribute(L(item.href), "href")}>${item.key ? t(locale, item.key) : item.label}</a> </div>`), defineScriptVars({ NAV: megaNav, LANG: locale }));
+})();<\/script>`])), maybeRenderHead(), t(locale, "productWebsite"), addAttribute(L(metaNav.customerService.href), "href"), t(locale, "customerService"), LOCALE_SHORT[locale], LOCALES.map((lc) => renderTemplate`<a${addAttribute(`ci-lang-option ${lc === locale ? "is-active" : ""}`, "class")}${addAttribute(switchLocalePath(pathname, lc), "href")}${addAttribute(lc, "hreflang")}${addAttribute(lc, "lang")}> <span class="ci-lang-option-code">${LOCALE_SHORT[lc]}</span> <span>${LOCALE_LABELS[lc]}</span> </a>`), addAttribute(L(metaNav.login.href), "href"), t(locale, "login"), addAttribute(L("/"), "href"), navL.map((item, i) => renderTemplate`<div class="ci-main-nav-entry"${addAttribute(i, "data-section")}> <a class="ci-main-nav-link"${addAttribute(L(item.href), "href")}>${item.label}</a> </div>`), defineScriptVars({ NAV: navL, LANG: locale }));
 }, "C:/Users/WELCOME/Desktop/FL/mpinger/src/components/Header.astro", void 0);
 
 const $$Astro$1 = createAstro();
@@ -396,7 +402,7 @@ const $$Footer = createComponent(($$result, $$props, $$slots) => {
     instagram: "M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2Zm0 3.05a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5Zm0 11.14a4.39 4.39 0 1 1 0-8.78 4.39 4.39 0 0 1 0 8.78Zm6.99-11.43a1.58 1.58 0 1 1-3.15 0 1.58 1.58 0 0 1 3.15 0Z",
     facebook: "M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"
   };
-  return renderTemplate`${maybeRenderHead()}<footer class="ci-footer"> <!-- Animated line motif --> <div class="ci-footer-line-container"> <div class="ci-footer-line container"> <svg viewBox="0 0 1366 14" preserveAspectRatio="none" aria-hidden="true"> <line class="ci-footer-line-2" x1="0" y1="6" x2="1366" y2="6"></line> <line class="ci-footer-line-moving" x1="0" y1="6" x2="120" y2="6"> <animate attributeName="x1" from="-120" to="1366" dur="3.5s" repeatCount="indefinite"></animate> <animate attributeName="x2" from="0" to="1486" dur="3.5s" repeatCount="indefinite"></animate> </line> </svg> </div> </div> <div class="ci-footer-main"> <div class="container ci-footer-grid"> <div class="ci-footer-brand"> <img src="/brand/mpinger-logo-1.png" alt="mpinger Engineering"> <p>Ihr Partner für deutsch-indische Fertigungslösungen — Präzisionsteile in gleichbleibend hoher Qualität.</p> <div class="ci-footer-social"> ${social.map((s) => renderTemplate`<a${addAttribute(s.href, "href")}${addAttribute(s.label, "aria-label")} target="_blank" rel="noopener"> <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path${addAttribute(icons[s.icon], "d")}></path></svg> </a>`)} </div> </div> ${footerColumns.map((col) => renderTemplate`<div class="ci-footer-col"> <p class="ci-footer-col-title">${col.titleKey ? t(locale, col.titleKey) : col.title}</p> <ul> ${col.links.map((l) => renderTemplate`<li><a${addAttribute(L(l.href), "href")}>${l.key ? t(locale, l.key) : l.label}</a></li>`)} </ul> </div>`)} </div> </div> <div class="ci-footer-bottom"> <div class="container ci-footer-bottom-inner"> <nav class="ci-footer-bottom-navi" aria-label="Legal"> ${footerNav.map((l) => renderTemplate`<a${addAttribute(L(l.href), "href")}>${t(locale, l.key)}</a>`)} </nav> <span class="ci-footer-copyright">Copyright &copy; ${year} mpinger GmbH. Alle Rechte vorbehalten.</span> </div> </div> </footer>`;
+  return renderTemplate`${maybeRenderHead()}<footer class="ci-footer"> <!-- Animated line motif --> <div class="ci-footer-line-container"> <div class="ci-footer-line container"> <svg viewBox="0 0 1366 14" preserveAspectRatio="none" aria-hidden="true"> <line class="ci-footer-line-2" x1="0" y1="6" x2="1366" y2="6"></line> <line class="ci-footer-line-moving" x1="0" y1="6" x2="120" y2="6"> <animate attributeName="x1" from="-120" to="1366" dur="3.5s" repeatCount="indefinite"></animate> <animate attributeName="x2" from="0" to="1486" dur="3.5s" repeatCount="indefinite"></animate> </line> </svg> </div> </div> <div class="ci-footer-main"> <div class="container ci-footer-grid"> <div class="ci-footer-brand"> <img src="/brand/mpinger-logo-1.png" alt="mpinger Engineering"> <p>${locale === "en" ? "Your partner for German-Indian manufacturing solutions \u2014 precision parts at consistently high quality." : "Ihr Partner f\xFCr deutsch-indische Fertigungsl\xF6sungen \u2014 Pr\xE4zisionsteile in gleichbleibend hoher Qualit\xE4t."}</p> <div class="ci-footer-social"> ${social.map((s) => renderTemplate`<a${addAttribute(s.href, "href")}${addAttribute(s.label, "aria-label")} target="_blank" rel="noopener"> <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path${addAttribute(icons[s.icon], "d")}></path></svg> </a>`)} </div> </div> ${footerColumns.map((col) => renderTemplate`<div class="ci-footer-col"> <p class="ci-footer-col-title">${col.titleKey ? t(locale, col.titleKey) : locale === "en" && col.en ? col.en : col.title}</p> <ul> ${col.links.map((l) => renderTemplate`<li><a${addAttribute(L(l.href), "href")}>${l.key ? t(locale, l.key) : locale === "en" && l.en ? l.en : l.label}</a></li>`)} </ul> </div>`)} </div> </div> <div class="ci-footer-bottom"> <div class="container ci-footer-bottom-inner"> <nav class="ci-footer-bottom-navi" aria-label="Legal"> ${footerNav.map((l) => renderTemplate`<a${addAttribute(L(l.href), "href")}>${t(locale, l.key)}</a>`)} </nav> <span class="ci-footer-copyright">Copyright &copy; ${year} mpinger GmbH. ${locale === "en" ? "All rights reserved." : "Alle Rechte vorbehalten."}</span> </div> </div> </footer>`;
 }, "C:/Users/WELCOME/Desktop/FL/mpinger/src/components/Footer.astro", void 0);
 
 const $$Astro = createAstro();
