@@ -1,0 +1,40 @@
+---
+import Breadcrumb from './Breadcrumb.astro';
+import ProductCard from './ProductCard.astro';
+const { node } = Astro.props;
+---
+<Breadcrumb items={node.breadcrumb} />
+
+<!-- Series hero / campaign intro -->
+<section class="series-hero">
+  <div class="container series-hero__grid">
+    <div class="series-hero__text">
+      <p class="eyebrow">{node.eyebrow}</p>
+      <h1>{node.title}</h1>
+      <p class="series-hero__intro">{node.intro}</p>
+      <a class="btn" href="/company/contact">Request a quote</a>
+    </div>
+    {node.hero && <div class="series-hero__media"><img src={node.hero} alt={node.title} /></div>}
+  </div>
+</section>
+
+<!-- Models in the series -->
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">Models</p>
+    <h2>{node.products.length} machines in the {node.title}</h2>
+    <div class="series-products">
+      {node.products.map((p) => <ProductCard product={p} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .series-hero { padding-block: var(--sp-7) var(--sp-5); }
+  .series-hero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-7); align-items: center; }
+  .series-hero__intro { font-size: 17px; color: var(--c-text-muted); margin-bottom: var(--sp-5); }
+  .series-hero__media img { width: 100%; border-radius: var(--radius); }
+  .series-products { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  @media (max-width: 1023px) { .series-hero__grid { grid-template-columns: 1fr; } .series-products { grid-template-columns: 1fr; } }
+  @media (min-width: 601px) and (max-width: 1023px) { .series-products { grid-template-columns: 1fr 1fr; } }
+</style>

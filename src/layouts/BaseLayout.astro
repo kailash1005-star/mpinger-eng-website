@@ -1,0 +1,30 @@
+---
+import '../styles/global.css';
+import '../styles/chrome.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const {
+  title = 'mpinger GmbH',
+  description = 'Ihr Partner für deutsch-indische Fertigungslösungen.',
+  locale = Astro.currentLocale || 'de',
+} = Astro.props;
+const pathname = Astro.url.pathname;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/brand/mpinger-logo-2.png" />
+  </head>
+  <body>
+    <Header locale={locale} pathname={pathname} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

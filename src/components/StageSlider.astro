@@ -1,0 +1,91 @@
+---
+import { stageSlides } from '../data/home.js';
+import { localizePath } from '../lib/i18n.js';
+const { locale = 'de' } = Astro.props;
+// Slide targets aren't in the CMS yet → route hero CTAs to Kontakt for now.
+const ctaHref = localizePath(locale, '/kontakt');
+---
+<section class="ci-stage" aria-label="Highlights">
+  <div class="ci-stage-track" id="stage-track">
+    {stageSlides.map((s, i) => (
+      <div class={`ci-stage-slide ${i === 0 ? 'is-active' : ''}`} data-index={i}>
+        {s.type === 'video' ? (
+          <video class="ci-stage-media" src={s.video} autoplay loop muted playsinline></video>
+        ) : (
+          <img class="ci-stage-media" src={s.img} alt={s.title} loading={i === 0 ? 'eager' : 'lazy'} />
+        )}
+        <div class="ci-stage-overlay"></div>
+        <div class="container ci-stage-content">
+          <p class="ci-stage-eyebrow">{s.eyebrow}</p>
+          <h1 class="ci-stage-title">{s.title}</h1>
+          <p class="ci-stage-text">{s.text}</p>
+          <a class="btn" href={ctaHref}>{s.cta.label}</a>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <button class="ci-stage-nav ci-stage-prev" id="stage-prev" aria-label="Previous">&#8249;</button>
+  <button class="ci-stage-nav ci-stage-next" id="stage-next" aria-label="Next">&#8250;</button>
+  <div class="ci-stage-dots" id="stage-dots">
+    {stageSlides.map((_, i) => <button class={`ci-stage-dot ${i === 0 ? 'is-active' : ''}`} data-go={i} aria-label={`Slide ${i + 1}`}></button>)}
+  </div>
+</section>
+
+<style>
+  .ci-stage { position: relative; height: clamp(420px, 70vh, 720px); overflow: hidden; background: #000; }
+  .ci-stage-track { height: 100%; }
+  .ci-stage-slide {
+    position: absolute; inset: 0; opacity: 0; visibility: hidden;
+    transition: opacity .8s ease; display: flex; align-items: flex-end;
+  }
+  .ci-stage-slide.is-active { opacity: 1; visibility: visible; }
+  .ci-stage-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ci-stage-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.25) 45%, rgba(0,0,0,0) 75%);
+  }
+  .ci-stage-content { position: relative; color: #fff; padding-bottom: clamp(40px, 8vh, 90px); max-width: 620px; }
+  .ci-stage-eyebrow {
+    font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .12em;
+    font-weight: 700; font-size: var(--fs-small); color: var(--c-primary); margin: 0 0 var(--sp-3);
+  }
+  .ci-stage-title { color: #fff; font-size: clamp(30px, 5vw, 56px); margin: 0 0 var(--sp-3); }
+  .ci-stage-text { font-size: clamp(15px, 2vw, 19px); margin-bottom: var(--sp-5); max-width: 46ch; }
+
+  .ci-stage-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,.15); color: #fff; border: 0; width: 48px; height: 48px;
+    font-size: 28px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(4px);
+    transition: background .2s;
+  }
+  .ci-stage-nav:hover { background: var(--c-primary); }
+  .ci-stage-prev { left: 20px; }
+  .ci-stage-next { right: 20px; }
+
+  .ci-stage-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; }
+  .ci-stage-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #fff; background: transparent; cursor: pointer; padding: 0; }
+  .ci-stage-dot.is-active { background: var(--c-primary); border-color: var(--c-primary); }
+
+  @media (max-width: 767px) { .ci-stage-nav { display: none; } }
+</style>
+
+<script>
+  const slides = [...document.querySelectorAll('.ci-stage-slide')];
+  const dots = [...document.querySelectorAll('.ci-stage-dot')];
+  let cur = 0;
+  let timer;
+  const go = (n) => {
+    cur = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === cur));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === cur));
+  };
+  const next = () => go(cur + 1);
+  const start = () => { timer = setInterval(next, 6000); };
+  const reset = () => { clearInterval(timer); start(); };
+
+  document.getElementById('stage-next')?.addEventListener('click', () => { next(); reset(); });
+  document.getElementById('stage-prev')?.addEventListener('click', () => { go(cur - 1); reset(); });
+  dots.forEach((d) => d.addEventListener('click', () => { go(+d.dataset.go); reset(); }));
+  if (slides.length > 1) start();
+</script>

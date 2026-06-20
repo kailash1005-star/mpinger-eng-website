@@ -1,0 +1,31 @@
+---
+// Reusable newsroom card (T1, T2, T4–T7). Left primary accent, tag + date + title.
+const { item } = Astro.props;
+---
+<a class="news-card" href={item.href}>
+  {item.image && <div class="news-card__media"><img src={item.image} alt={item.title} loading="lazy" /></div>}
+  <div class="news-card__body">
+    <div class="news-card__meta">
+      <span class="news-card__tag">{item.tag}</span>
+      <time class="news-card__date">{item.date}</time>
+    </div>
+    <h3 class="news-card__title">{item.title}</h3>
+    {item.excerpt && <p class="news-card__excerpt">{item.excerpt}</p>}
+    <span class="arrow news-card__more">Read more </span>
+  </div>
+</a>
+
+<style>
+  .news-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--c-border); border-left: 4px solid var(--c-primary); border-radius: var(--radius); overflow: hidden; color: inherit; transition: box-shadow .2s, transform .2s; }
+  .news-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); text-decoration: none; }
+  .news-card__media { aspect-ratio: 16/9; overflow: hidden; }
+  .news-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .news-card:hover .news-card__media img { transform: scale(1.05); }
+  .news-card__body { padding: var(--sp-5); display: flex; flex-direction: column; flex: 1; }
+  .news-card__meta { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+  .news-card__tag { display: inline-block; background: var(--c-accent); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: var(--radius); }
+  .news-card__date { color: var(--c-text-muted); font-size: var(--fs-small); }
+  .news-card__title { font-size: var(--fs-h3); margin: 0 0 var(--sp-3); }
+  .news-card__excerpt { color: var(--c-text-muted); margin: 0 0 var(--sp-4); }
+  .news-card__more { margin-top: auto; color: var(--c-secondary); font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); }
+</style>

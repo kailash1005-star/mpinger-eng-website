@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryOverview from '../../components/CategoryOverview.astro';
+import SeriesListing from '../../components/SeriesListing.astro';
+import ProductDetail from '../../components/ProductDetail.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import SolutionLayout from '../../layouts/SolutionLayout.astro';
+import { LOCALES, localizePath } from '../../lib/i18n.js';
+import { getPageByPath, getChildren, getPage, imgUrl } from '../../lib/cms.js';
+
+const FALLBACK = 'https://in.dmgmori.com/resource/image/884226/stage_slider/lg/8/aerospace-stageteaser-picture.jpg';
+const { lang } = Astro.params;
+const path = Astro.params.path || '';
+if (!LOCALES.includes(lang)) return new Response(null, { status: 404 });
+
+const L = (p) => localizePath(lang, p);
+const sv = (sf) => (sf || []).map((b) => b.value); // StreamField → array of block values
+
+function crumbsFromPath(p) {
+  const segs = String(p).split('/').filter(Boolean);
+  let acc = '';
+  return segs.map((s, i) => {
+    acc += '/' + s;
+    const label = s.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    return i === segs.length - 1 ? { label } : { label, href: L(acc) };
+  });
+}
+
+const result = await getPageByPath(path, lang);
+if (!result) return new Response(null, { status: 404 });
+const { type, page } = result;
+const breadcrumb = crumbsFromPath(path);
+
+// ---- Adapters: CMS page → component props ----
+let node = null, p = null, article = null, solution = null;
+
+if (type === 'content.ProductCategoryPage') {
+  const children = await getChildren(page.id, lang);
+  node = {
+    eyebrow: page.eyebrow, title: page.title, intro: page.intro, breadcrumb,
+    teasers: children.map((c) => ({ title: c.title, href: L(c.path), img: FALLBACK, text: '' })),
+    info: sv(page.info).map((b) => ({ h: b.heading, p: b.text })),
+  };
+} else if (type === 'content.ProductSeriesPage') {
+  const children = await getChildren(page.id, lang);
+  const details = await Promise.all(children.map((c) => getPage(c.id)));
+  node = {
+    eyebrow: page.eyebrow, title: page.title, intro: page.intro, breadcrumb,
+    hero: imgUrl(page.hero_url, FALLBACK),
+    products: details.map((d, i) => ({
+      slug: `${lang}${children[i].path}`,
+      name: d.title, series: d.series || page.title,
+      image: imgUrl(d.image_url, FALLBACK),
+      quickSpecs: sv(d.key_facts).slice(0, 3).map((f) => [f.label, f.value]),
+    })),
+  };
+} else if (type === 'content.ProductDetailPage') {
+  p = {
+    name: page.title, series: page.series, tagline: page.tagline,
+    image: imgUrl(page.image_url, FALLBACK), breadcrumb,
+    badges: sv(page.badges),
+    keyFacts: sv(page.key_facts).map((f) => ({ label: f.label, value: f.value })),
+    highlights: sv(page.highlights).map((h) => ({ title: h.title, text: h.text })),
+    specs: sv(page.specs).map((g) => ({ group: g.group, rows: (g.rows || []).map((r) => [r.label, r.value]) })),
+  };
+} else if (type === 'content.ArticlePage') {
+  article = {
+    tag: page.tag, date: page.published_date, title: page.title, intro: page.intro,
+    hero: imgUrl(page.hero_url, ''), breadcrumb,
+    body: sv2(page.body),
+  };
+} else if (type === 'content.SolutionPage') {
+  solution = {
+    eyebrow: page.eyebrow, title: page.title, intro: page.intro, breadcrumb,
+    hero: imgUrl(page.hero_url, FALLBACK),
+    stats: sv(page.stats).map((s) => ({ value: s.value, label: s.label })),
+    features: sv(page.features).map((f) => ({ eyebrow: f.eyebrow, title: f.title, text: f.text, image: imgUrl(f.image, FALLBACK) })),
+  };
+}
+
+function sv2(body) {
+  return (body || []).map((b) => {
+    if (b.type === 'heading') return { type: 'heading', text: b.value };
+    if (b.type === 'paragraph') return { type: 'text', text: String(b.value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() };
+    if (b.type === 'quote') return { type: 'quote', text: b.value.text, cite: b.value.cite };
+    if (b.type === 'facts') return { type: 'facts', items: (b.value || []).map((f) => ({ value: f.value, label: f.label })) };
+    if (b.type === 'image') return { type: 'image', src: imgUrl(b.value.image, FALLBACK), caption: b.value.caption };
+    return { type: 'text', text: '' };
+  });
+}
+
+const title = `${page.title} — mpinger`;
+const wrap = ['content.ProductCategoryPage', 'content.ProductSeriesPage', 'content.ProductDetailPage', 'content.StandardPage'].includes(type);
+---
+{wrap ? (
+  <BaseLayout title={title} description={page.intro || ''} locale={lang}>
+    {type === 'content.ProductCategoryPage' && <CategoryOverview node={node} />}
+    {type === 'content.ProductSeriesPage' && <SeriesListing node={node} />}
+    {type === 'content.ProductDetailPage' && <ProductDetail p={p} />}
+    {type === 'content.StandardPage' && (
+      <>
+        <section class="page-hero" style={`background-image:url('${FALLBACK}')`}>
+          <div class="page-hero__overlay"></div>
+          <div class="container page-hero__inner">
+            <p class="eyebrow eyebrow--light">{page.eyebrow}</p>
+            <h1>{page.title}</h1>
+            {page.intro && <p class="page-hero__intro">{page.intro}</p>}
+          </div>
+        </section>
+        <section class="section"><div class="container content-page">
+          {(page.body || []).map((b) => (
+            b.type === 'heading' ? <h2>{b.value}</h2>
+            : b.type === 'paragraph' ? <div class="content-page__rt" set:html={b.value} />
+            : b.type === 'quote' ? <blockquote>{b.value.text}{b.value.cite && <cite>{b.value.cite}</cite>}</blockquote>
+            : null
+          ))}
+        </div></section>
+      </>
+    )}
+  </BaseLayout>
+) : type === 'content.ArticlePage' ? (
+  <ArticleLayout article={article} related={[]} />
+) : type === 'content.SolutionPage' ? (
+  <SolutionLayout solution={solution} />
+) : (
+  <BaseLayout title={title} locale={lang}><section class="section"><div class="container"><h1>{page.title}</h1></div></section></BaseLayout>
+)}

@@ -1,0 +1,179 @@
+---
+import { metaNav } from '../data/nav.js';
+import { megaNav } from '../data/megamenu.js';
+import { LOCALES, LOCALE_LABELS, LOCALE_SHORT, t, localizePath, switchLocalePath } from '../lib/i18n.js';
+
+const { locale = 'de', pathname = '/' } = Astro.props;
+const L = (p) => localizePath(locale, p);
+---
+<header class="ci-header" id="site-header">
+  <!-- Meta navigation (top utility bar) -->
+  <div class="ci-meta-navigation">
+    <div class="ci-meta-left">
+      <button class="ci-site-selector" aria-haspopup="true">
+        <span>{t(locale, 'productWebsite')}</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+    <div class="ci-meta-right">
+      <a class="ci-meta-item" href={L(metaNav.customerService.href)}>{t(locale, 'customerService')}</a>
+
+      <!-- Language dropdown -->
+      <div class="ci-lang-switch" id="lang-switch">
+        <button class="ci-meta-item ci-lang" aria-haspopup="true" aria-expanded="false" id="lang-toggle">
+          <span class="ci-lang-code">{LOCALE_SHORT[locale]}</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ci-lang-menu" id="lang-menu" hidden>
+          {LOCALES.map((lc) => (
+            <a class={`ci-lang-option ${lc === locale ? 'is-active' : ''}`} href={switchLocalePath(pathname, lc)} hreflang={lc} lang={lc}>
+              <span class="ci-lang-option-code">{LOCALE_SHORT[lc]}</span>
+              <span>{LOCALE_LABELS[lc]}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <a class="ci-meta-item ci-login" href={L(metaNav.login.href)}>
+        <span class="ci-login-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
+        </span>
+        {t(locale, 'login')}
+      </a>
+    </div>
+  </div>
+
+  <!-- Main navigation -->
+  <div class="ci-main-nav">
+    <div class="container ci-main-nav-inner">
+      <a class="ci-logo" href={L('/')} aria-label="mpinger home">
+        <img src="/brand/mpinger-logo-1.png" alt="mpinger Engineering" width="164" height="59" />
+      </a>
+
+      <nav class="ci-main-nav-entries" aria-label="Main">
+        {megaNav.map((item, i) => (
+          <div class="ci-main-nav-entry" data-section={i}>
+            <a class="ci-main-nav-link" href={L(item.href)}>{item.key ? t(locale, item.key) : item.label}</a>
+          </div>
+        ))}
+      </nav>
+
+      <div class="ci-main-nav-actions">
+        <button class="ci-search-toggle" aria-label="Search" id="search-toggle">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="ci-burger" aria-label="Menu" id="burger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cascading mega flyout (columns injected by JS) -->
+  <div class="ci-nav-flyout" id="nav-flyout" hidden>
+    <div class="ci-flyout-cols" id="flyout-cols"></div>
+  </div>
+
+  <!-- Search flyout -->
+  <div class="ci-search-flyout" id="search-flyout" hidden>
+    <div class="container ci-search-flyout-wrapper">
+      <div class="ci-search-input-wrapper">
+        <input type="search" class="ci-search-input" placeholder="What are you looking for?" aria-label="Search" />
+        <button class="ci-search-flyout-close" id="search-close" aria-label="Close">&times;</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline define:vars={{ NAV: megaNav, LANG: locale }}>
+  (function () {
+    const header = document.getElementById('site-header');
+    const flyout = document.getElementById('nav-flyout');
+    const colsWrap = document.getElementById('flyout-cols');
+    const entries = [...document.querySelectorAll('.ci-main-nav-entry')];
+    const lp = (h) => (h && h.startsWith('/')) ? `/${LANG}${h === '/' ? '' : h}` : h;
+    const finderIcon = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="#fff"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.2" fill="#fff"/></svg>';
+    const chevron = '<svg class="ci-row-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>';
+    let closeTimer;
+
+    function makeColumn(title, items, level) {
+      const col = document.createElement('div');
+      col.className = 'ci-flyout-col';
+      col.dataset.level = level;
+      let html = `<p class="ci-flyout-col-title">${title}</p><div class="ci-flyout-list">`;
+      items.forEach((it, idx) => {
+        const hasKids = it.children && it.children.length;
+        if (it.finder) {
+          html += `<a class="ci-flyout-finder" href="${lp(it.href)}" data-idx="${idx}">${finderIcon}<span>${it.label}</span>${hasKids ? chevron : ''}</a>`;
+        } else {
+          html += `<a class="ci-flyout-row${hasKids ? ' has-kids' : ''}" href="${lp(it.href)}" data-idx="${idx}"><span>${it.label}</span>${hasKids ? chevron : ''}</a>`;
+        }
+      });
+      html += '</div>';
+      col.innerHTML = html;
+
+      col.querySelectorAll('[data-idx]').forEach((row) => {
+        row.addEventListener('mouseenter', () => {
+          // remove deeper columns
+          [...colsWrap.children].forEach((c) => { if (+c.dataset.level > level) c.remove(); });
+          col.querySelectorAll('[data-idx]').forEach((r) => r.classList.remove('is-active'));
+          const item = items[+row.dataset.idx];
+          if (item.children && item.children.length) {
+            row.classList.add('is-active');
+            colsWrap.appendChild(makeColumn(item.label.toUpperCase(), item.children, level + 1));
+          }
+        });
+      });
+      return col;
+    }
+
+    function openSection(i) {
+      clearTimeout(closeTimer);
+      const section = NAV[i];
+      if (!section.children || !section.children.length) return;
+      colsWrap.innerHTML = '';
+      colsWrap.appendChild(makeColumn(section.label.toUpperCase(), section.children, 0));
+      flyout.hidden = false;
+      header.classList.add('flyout-open');
+    }
+    function closeFlyout() { flyout.hidden = true; header.classList.remove('flyout-open'); }
+
+    entries.forEach((e) => {
+      const i = +e.dataset.section;
+      const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches;
+      e.addEventListener('mouseenter', () => { if (isDesktop()) openSection(i); });
+      e.querySelector('.ci-main-nav-link').addEventListener('click', (ev) => {
+        if (!isDesktop()) { ev.preventDefault(); openSection(i); header.classList.add('is-mobile-open'); }
+      });
+    });
+    header.addEventListener('mouseleave', () => { closeTimer = setTimeout(closeFlyout, 180); });
+    flyout.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+
+    // Search
+    const sToggle = document.getElementById('search-toggle');
+    const sFlyout = document.getElementById('search-flyout');
+    document.getElementById('search-close')?.addEventListener('click', () => sFlyout.hidden = true);
+    sToggle?.addEventListener('click', () => { sFlyout.hidden = !sFlyout.hidden; if (!sFlyout.hidden) sFlyout.querySelector('input')?.focus(); });
+
+    // Language dropdown
+    const langSwitch = document.getElementById('lang-switch');
+    const langToggle = document.getElementById('lang-toggle');
+    const langMenu = document.getElementById('lang-menu');
+    langToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = langMenu.hidden;
+      langMenu.hidden = !open;
+      langToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => {
+      if (langMenu && !langSwitch.contains(e.target)) { langMenu.hidden = true; langToggle?.setAttribute('aria-expanded', 'false'); }
+    });
+
+    // Mobile burger
+    document.getElementById('burger')?.addEventListener('click', () => {
+      header.classList.toggle('is-mobile-open');
+      if (!header.classList.contains('is-mobile-open')) closeFlyout();
+    });
+
+    // Scroll shrink
+    window.addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 40));
+  })();
+</script>

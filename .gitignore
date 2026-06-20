@@ -1,0 +1,6 @@
+.firecrawl/
+
+cms/.env
+cms/db.sqlite3
+cms-venv/
+node_modules/

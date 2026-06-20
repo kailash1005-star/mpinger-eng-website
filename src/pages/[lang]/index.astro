@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StageSlider from '../../components/StageSlider.astro';
+import { highlightTeasers, newsTeasers } from '../../data/home.js';
+import { LOCALES, t, localizePath } from '../../lib/i18n.js';
+
+const { lang } = Astro.params;
+if (!LOCALES.includes(lang)) return new Response(null, { status: 404 });
+const L = (p) => localizePath(lang, p);
+---
+<BaseLayout title="mpinger GmbH — Ihr starker Partner" locale={lang}>
+  <StageSlider locale={lang} />
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">{t(lang, 'discover')}</p>
+      <h2>Discover our latest technologies</h2>
+      <div class="teaser-grid">
+        {highlightTeasers.map((tz) => (
+          <a class="teaser-card" href={L('/ueber-uns')}>
+            <div class="teaser-card__media"><img src={tz.img} alt={tz.title} loading="lazy" /></div>
+            <div class="teaser-card__body">
+              <p class="eyebrow">{tz.eyebrow}</p>
+              <h3>{tz.title}</h3>
+              <p class="teaser-card__text">{tz.text}</p>
+              <span class="teaser-card__link arrow">{t(lang, 'readMore')} </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="news-head">
+        <div>
+          <p class="eyebrow">{t(lang, 'news')}</p>
+          <h2>News &amp; stories</h2>
+        </div>
+        <a class="btn btn--ghost" href={L('/kontakt')}>{t(lang, 'allOf')}</a>
+      </div>
+      <div class="news-grid">
+        {newsTeasers.map((n) => (
+          <a class="news-card" href={L('/kontakt')}>
+            <span class="news-card__tag">{n.tag}</span>
+            <time class="news-card__date">{n.date}</time>
+            <h3 class="news-card__title">{n.title}</h3>
+            <span class="arrow">{t(lang, 'readMore')} </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .teaser-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  .teaser-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius); overflow: hidden; color: inherit; transition: box-shadow .2s, transform .2s; }
+  .teaser-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); text-decoration: none; }
+  .teaser-card__media { aspect-ratio: 16/10; overflow: hidden; }
+  .teaser-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .teaser-card:hover .teaser-card__media img { transform: scale(1.05); }
+  .teaser-card__body { padding: var(--sp-5); }
+  .teaser-card__text { color: var(--c-text-muted); }
+  .teaser-card__link { color: var(--c-secondary); font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); }
+  .news-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--sp-5); }
+  .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
+  .news-card { background: #fff; border-left: 4px solid var(--c-primary); padding: var(--sp-5); color: inherit; transition: box-shadow .2s; }
+  .news-card:hover { box-shadow: var(--shadow); text-decoration: none; }
+  .news-card__tag { display: inline-block; background: var(--c-accent); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: var(--radius); }
+  .news-card__date { display: block; color: var(--c-text-muted); font-size: var(--fs-small); margin: var(--sp-3) 0 var(--sp-2); }
+  .news-card__title { font-size: var(--fs-h3); margin-bottom: var(--sp-3); }
+  .news-card .arrow { color: var(--c-secondary); font-weight: 700; font-size: var(--fs-small); text-transform: uppercase; font-family: var(--font-heading); }
+  @media (max-width: 1023px) { .teaser-grid, .news-grid { grid-template-columns: 1fr; } }
+</style>

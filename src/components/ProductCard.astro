@@ -1,0 +1,34 @@
+---
+// Reusable product tile for listing grids (T3). Mirrors the source card:
+// image, title, a compact spec data-table, and a link.
+const { product } = Astro.props;
+---
+<a class="ci-product" href={`/${product.slug}`} data-series={product.series}>
+  <div class="ci-product-img"><img src={product.image} alt={product.name} loading="lazy" /></div>
+  <div class="ci-product-body">
+    <p class="ci-product-series">{product.series}</p>
+    <h3 class="ci-product-title">{product.name}</h3>
+    <table class="ci-product-data-table">
+      <tbody>
+        {product.quickSpecs.map(([k, v]) => (<tr><th>{k}</th><td>{v}</td></tr>))}
+      </tbody>
+    </table>
+    <span class="ci-product-link arrow">View machine </span>
+  </div>
+</a>
+
+<style>
+  .ci-product { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius); overflow: hidden; color: inherit; transition: box-shadow .2s, transform .2s; }
+  .ci-product:hover { box-shadow: var(--shadow); transform: translateY(-4px); text-decoration: none; }
+  .ci-product-img { aspect-ratio: 4/3; background: var(--c-bg-alt); overflow: hidden; display: grid; place-items: center; }
+  .ci-product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .ci-product:hover .ci-product-img img { transform: scale(1.04); }
+  .ci-product-body { padding: var(--sp-4); display: flex; flex-direction: column; flex: 1; }
+  .ci-product-series { color: var(--c-accent); text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: .06em; margin: 0 0 4px; font-family: var(--font-heading); }
+  .ci-product-title { font-size: var(--fs-h3); margin: 0 0 var(--sp-3); }
+  .ci-product-data-table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-4); }
+  .ci-product-data-table th, .ci-product-data-table td { text-align: left; font-size: var(--fs-small); padding: 5px 0; border-top: 1px solid var(--c-border); }
+  .ci-product-data-table th { color: var(--c-text-muted); font-weight: 400; }
+  .ci-product-data-table td { text-align: right; font-weight: 700; }
+  .ci-product-link { margin-top: auto; color: var(--c-secondary); font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); }
+</style>

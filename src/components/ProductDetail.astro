@@ -1,0 +1,145 @@
+---
+import Breadcrumb from './Breadcrumb.astro';
+import { tabs, relatedNews } from '../data/products.js';
+const { p } = Astro.props;
+const crumb = (p.breadcrumb || []).map((b) => (typeof b === 'string' ? { label: b } : b));
+---
+<Breadcrumb items={crumb} />
+
+<!-- Product hero -->
+<section class="product-hero">
+  <div class="container product-hero__grid">
+    <div class="product-hero__media"><img src={p.image} alt={p.name} /></div>
+    <div class="product-hero__info">
+      <p class="eyebrow">{p.series}</p>
+      <h1>{p.name}</h1>
+      <p class="product-hero__tagline">{p.tagline}</p>
+      {p.badges && (
+        <ul class="product-badges">{p.badges.map((b) => <li>{b}</li>)}</ul>
+      )}
+      <div class="product-hero__actions">
+        <a class="btn" href="/company/contact">Request a quote</a>
+        <a class="btn btn--ghost" href="#specs">Technical data</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sticky tab nav -->
+<nav class="product-tabs" aria-label="Sections">
+  <div class="container product-tabs__inner">
+    {tabs.map((t, i) => (
+      <a class={`product-tab ${i === 0 ? 'is-active' : ''}`} href={`#${t.toLowerCase().replace(/[^a-z]+/g, '-')}`}>{t}</a>
+    ))}
+  </div>
+</nav>
+
+<!-- Key facts strip -->
+{p.keyFacts && (
+  <section class="facts">
+    <div class="container facts__grid">
+      {p.keyFacts.map((f) => (
+        <div class="fact"><span class="fact__value">{f.value}</span><span class="fact__label">{f.label}</span></div>
+      ))}
+    </div>
+  </section>
+)}
+
+<!-- Highlights -->
+{p.highlights && (
+  <section class="section" id="highlights">
+    <div class="container">
+      <p class="eyebrow">Highlights</p>
+      <h2>Why {p.name}</h2>
+      <div class="highlight-grid">
+        {p.highlights.map((h) => (
+          <div class="highlight"><div class="highlight__bar"></div><h3>{h.title}</h3><p>{h.text}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- Technical data -->
+{p.specs && (
+  <section class="section section--alt" id="specs">
+    <div class="container">
+      <p class="eyebrow">Technical data</p>
+      <h2>Specifications</h2>
+      <div class="spec-tables">
+        {p.specs.map((s) => (
+          <table class="spec-table">
+            <caption>{s.group}</caption>
+            <tbody>{s.rows.map(([k, v]) => (<tr><th scope="row">{k}</th><td>{v}</td></tr>))}</tbody>
+          </table>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- Related news -->
+<section class="section" id="service-training">
+  <div class="container">
+    <p class="eyebrow">Related</p>
+    <h2>News &amp; stories</h2>
+    <div class="related-grid">
+      {relatedNews.map((n) => (
+        <a class="news-card" href={n.href}>
+          <span class="news-card__tag">{n.tag}</span>
+          <time class="news-card__date">{n.date}</time>
+          <h3 class="news-card__title">{n.title}</h3>
+          <span class="arrow">Read more </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-hero { padding-block: var(--sp-7); }
+  .product-hero__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--sp-7); align-items: center; }
+  .product-hero__media img { width: 100%; border-radius: var(--radius); }
+  .product-hero__tagline { font-size: 18px; color: var(--c-text-muted); }
+  .product-badges { list-style: none; margin: var(--sp-4) 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .product-badges li { background: var(--c-bg-alt); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 4px 12px; font-size: var(--fs-small); font-weight: 500; }
+  .product-hero__actions { display: flex; gap: var(--sp-3); margin-top: var(--sp-5); flex-wrap: wrap; }
+
+  .product-tabs { position: sticky; top: var(--header-h); z-index: 500; background: #fff; border-bottom: 1px solid var(--c-border); box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+  .product-tabs__inner { display: flex; gap: var(--sp-6); overflow-x: auto; }
+  .product-tab { white-space: nowrap; padding: var(--sp-4) 0; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); letter-spacing: .04em; color: var(--c-text); border-bottom: 3px solid transparent; }
+  .product-tab.is-active, .product-tab:hover { color: var(--c-accent); border-color: var(--c-primary); text-decoration: none; }
+
+  .facts { background: var(--c-bg-dark); color: #fff; }
+  .facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .fact { padding: var(--sp-6) var(--sp-4); text-align: center; border-right: 1px solid #333; }
+  .fact:last-child { border-right: 0; }
+  .fact__value { display: block; font-family: var(--font-heading); font-size: 30px; font-weight: 700; color: var(--c-primary); }
+  .fact__label { font-size: var(--fs-small); color: #b0b0b0; }
+
+  .highlight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  .highlight { padding: var(--sp-5); border: 1px solid var(--c-border); border-radius: var(--radius); }
+  .highlight__bar { width: 40px; height: 4px; background: var(--c-primary); margin-bottom: var(--sp-4); }
+  .highlight p { color: var(--c-text-muted); margin: 0; }
+
+  .spec-tables { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  .spec-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--c-border); }
+  .spec-table caption { text-align: left; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); color: var(--c-accent); padding: var(--sp-3); background: var(--c-bg-alt); }
+  .spec-table th, .spec-table td { text-align: left; padding: 10px var(--sp-3); border-top: 1px solid var(--c-border); font-size: var(--fs-body); }
+  .spec-table th { font-weight: 400; color: var(--c-text-muted); }
+  .spec-table td { font-weight: 700; text-align: right; }
+
+  .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  .news-card { background: #fff; border-left: 4px solid var(--c-primary); padding: var(--sp-5); color: inherit; }
+  .news-card:hover { box-shadow: var(--shadow); text-decoration: none; }
+  .news-card__tag { display: inline-block; background: var(--c-accent); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: var(--radius); }
+  .news-card__date { display: block; color: var(--c-text-muted); font-size: var(--fs-small); margin: var(--sp-3) 0 var(--sp-2); }
+  .news-card__title { font-size: var(--fs-h3); margin-bottom: var(--sp-3); }
+  .news-card .arrow { color: var(--c-secondary); font-weight: 700; font-size: var(--fs-small); text-transform: uppercase; font-family: var(--font-heading); }
+
+  @media (max-width: 1023px) {
+    .product-hero__grid { grid-template-columns: 1fr; }
+    .facts__grid { grid-template-columns: repeat(2, 1fr); }
+    .highlight-grid, .spec-tables, .related-grid { grid-template-columns: 1fr; }
+  }
+</style>

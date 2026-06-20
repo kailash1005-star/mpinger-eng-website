@@ -1,0 +1,78 @@
+---
+import Breadcrumb from './Breadcrumb.astro';
+import ProductCard from './ProductCard.astro';
+const { node } = Astro.props;
+---
+<Breadcrumb items={node.breadcrumb} />
+
+<section class="cat-intro">
+  <div class="container">
+    <p class="eyebrow">{node.eyebrow}</p>
+    <h1>{node.title}</h1>
+    <p class="cat-intro__text">{node.intro}</p>
+  </div>
+</section>
+
+<!-- Sub-category teaser grid (technology teasers) -->
+<section class="section">
+  <div class="container">
+    <div class="cat-teasers">
+      {node.teasers.map((t) => (
+        <a class="cat-teaser" href={t.href}>
+          <div class="cat-teaser__media"><img src={t.img} alt={t.title} loading="lazy" /></div>
+          <div class="cat-teaser__body">
+            <h3>{t.title}</h3>
+            {t.text && <p>{t.text}</p>}
+            <span class="cat-teaser__link arrow">Discover </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Top-seller products (optional) -->
+{node.topSellers && (
+  <section class="section section--alt">
+    <div class="container">
+      <p class="eyebrow">Top sellers</p>
+      <h2>Popular machines in this category</h2>
+      <div class="cat-products">
+        {node.topSellers.map((p) => <ProductCard product={p} />)}
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- Info / FAQ sections (optional) -->
+{node.info && (
+  <section class="section">
+    <div class="container cat-info">
+      {node.info.map((s) => (<div class="cat-info__block"><h2>{s.h}</h2><p>{s.p}</p></div>))}
+    </div>
+  </section>
+)}
+
+<style>
+  .cat-intro { padding-block: var(--sp-7) var(--sp-4); }
+  .cat-intro__text { max-width: 72ch; color: var(--c-text-muted); font-size: 17px; }
+
+  .cat-teasers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
+  .cat-teaser { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius); overflow: hidden; color: inherit; transition: box-shadow .2s, transform .2s; }
+  .cat-teaser:hover { box-shadow: var(--shadow); transform: translateY(-4px); text-decoration: none; }
+  .cat-teaser__media { aspect-ratio: 16/10; overflow: hidden; background: var(--c-bg-alt); }
+  .cat-teaser__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .cat-teaser:hover .cat-teaser__media img { transform: scale(1.05); }
+  .cat-teaser__body { padding: var(--sp-5); display: flex; flex-direction: column; flex: 1; }
+  .cat-teaser__body h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-2); }
+  .cat-teaser__body p { color: var(--c-text-muted); margin: 0 0 var(--sp-4); }
+  .cat-teaser__link { margin-top: auto; color: var(--c-secondary); font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); }
+
+  .cat-products { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5); }
+  .cat-info { max-width: 860px; display: grid; gap: var(--sp-5); }
+  .cat-info__block h2 { font-size: var(--fs-h3); }
+  .cat-info__block p { color: #333; font-size: 16px; line-height: 1.75; }
+
+  @media (max-width: 1023px) { .cat-teasers, .cat-products { grid-template-columns: 1fr; } }
+  @media (min-width: 601px) and (max-width: 1023px) { .cat-teasers, .cat-products { grid-template-columns: 1fr 1fr; } }
+</style>

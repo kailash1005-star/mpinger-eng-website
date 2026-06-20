@@ -1,0 +1,93 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const { solution } = Astro.props;
+---
+<BaseLayout title={`${solution.title} — DMG MORI`} description={solution.intro}>
+  <Breadcrumb items={solution.breadcrumb} />
+
+  <!-- Full-bleed hero -->
+  <section class="solution-hero" style={`background-image:url('${solution.hero}')`}>
+    <div class="solution-hero__overlay"></div>
+    <div class="container solution-hero__content">
+      <p class="eyebrow eyebrow--light">{solution.eyebrow}</p>
+      <h1>{solution.title}</h1>
+      <p class="solution-hero__intro">{solution.intro}</p>
+      <a class="btn" href={solution.cta?.href || '/company/contact'}>{solution.cta?.label || 'Talk to an expert'}</a>
+    </div>
+  </section>
+
+  <!-- Stats band -->
+  {solution.stats && (
+    <section class="solution-stats">
+      <div class="container solution-stats__grid">
+        {solution.stats.map((s) => (
+          <div class="solution-stat"><span class="solution-stat__value">{s.value}</span><span class="solution-stat__label">{s.label}</span></div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Alternating feature rows -->
+  <section class="section">
+    <div class="container solution-rows">
+      {solution.features.map((f, i) => (
+        <div class={`solution-row ${i % 2 ? 'is-reverse' : ''}`}>
+          <div class="solution-row__media"><img src={f.image} alt={f.title} loading="lazy" /></div>
+          <div class="solution-row__text">
+            <p class="eyebrow">{f.eyebrow}</p>
+            <h2>{f.title}</h2>
+            <p>{f.text}</p>
+            {f.link && <a class="arrow solution-row__link" href={f.link.href}>{f.link.label} </a>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="solution-cta">
+    <div class="container solution-cta__inner">
+      <div>
+        <h2>{solution.ctaBand?.title || 'Ready to discuss your application?'}</h2>
+        <p>{solution.ctaBand?.text || 'Our industry specialists help you find the right process and machine.'}</p>
+      </div>
+      <a class="btn btn--accent" href="/company/contact">Contact us</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .eyebrow--light { color: var(--c-primary); }
+  .solution-hero { position: relative; min-height: 460px; display: flex; align-items: flex-end; background-size: cover; background-position: center; color: #fff; }
+  .solution-hero__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.7), rgba(0,0,0,.2)); }
+  .solution-hero__content { position: relative; padding-block: var(--sp-8); max-width: 640px; }
+  .solution-hero__content h1 { color: #fff; font-size: clamp(30px, 5vw, 52px); }
+  .solution-hero__intro { font-size: 18px; margin-bottom: var(--sp-5); }
+
+  .solution-stats { background: var(--c-bg-dark); color: #fff; }
+  .solution-stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .solution-stat { text-align: center; padding: var(--sp-6) var(--sp-4); border-right: 1px solid #333; }
+  .solution-stat:last-child { border-right: 0; }
+  .solution-stat__value { display: block; font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--c-primary); }
+  .solution-stat__label { font-size: var(--fs-small); color: #b0b0b0; }
+
+  .solution-rows { display: flex; flex-direction: column; gap: var(--sp-8); }
+  .solution-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-7); align-items: center; }
+  .solution-row.is-reverse .solution-row__media { order: 2; }
+  .solution-row__media img { width: 100%; border-radius: var(--radius); }
+  .solution-row__text p:not(.eyebrow) { color: var(--c-text-muted); font-size: 16px; }
+  .solution-row__link { color: var(--c-secondary); font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: var(--fs-small); }
+
+  .solution-cta { background: var(--c-bg-alt); }
+  .solution-cta__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); padding-block: var(--sp-7); flex-wrap: wrap; }
+  .solution-cta__inner h2 { margin-bottom: var(--sp-2); }
+  .solution-cta__inner p { margin: 0; color: var(--c-text-muted); }
+
+  @media (max-width: 1023px) {
+    .solution-stats__grid { grid-template-columns: repeat(2, 1fr); }
+    .solution-row, .solution-row.is-reverse .solution-row__media { grid-template-columns: 1fr; order: 0; }
+    .solution-row { grid-template-columns: 1fr; }
+  }
+</style>
